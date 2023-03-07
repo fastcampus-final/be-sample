@@ -24,6 +24,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
     private final RedisTemplateRepository redisTemplateRepository;
+
     @Override
     public ResponseDTO<?> signup(UserDTO.SignupReqDTO signupReqDTO) {
         if (userRepository.findByEmail(signupReqDTO.getEmail()).isEmpty()) {
@@ -108,9 +109,11 @@ public class UserServiceImpl implements UserService {
     private String encodingPassword(String password) {
         return passwordEncoder.encode(password);
     }
+
     private boolean withDrawCheck(User user) {
         return user.getDeleteCheck() != null;
     }
+
     private void passwordMustBeSame(String requestPassword, String password) {
         if (!passwordEncoder.matches(requestPassword, password)) {
             throw new IllegalArgumentException();

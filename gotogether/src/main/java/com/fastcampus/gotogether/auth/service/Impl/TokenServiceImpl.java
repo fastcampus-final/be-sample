@@ -46,7 +46,7 @@ public class TokenServiceImpl implements TokenService {
                 //Role 확인
                 String userRole = userRepository.findByEmail(userEmail).orElseThrow(IllegalArgumentException::new).getRole();
 
-                String updateAccessToken = jwtProvider.recreationAccessToken(userEmail,userRole);
+                String updateAccessToken = jwtProvider.recreationAccessToken(userEmail, userRole);
                 return new ResponseDTO<>(200, "Refresh 토큰을 통한 Access Token 생성이 완료되었습니다",
                         TokenDTO.builder().accessToken(updateAccessToken).refreshToken(refreshToken).build());
             } else {

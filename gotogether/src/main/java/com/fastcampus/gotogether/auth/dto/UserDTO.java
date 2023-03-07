@@ -33,16 +33,16 @@ public class UserDTO {
     @Getter
     @Setter
     @ApiModel(value = "토큰에 담길 정보")
-    public static class UserAccessDTO{
+    public static class UserAccessDTO {
         @ApiModelProperty(value = "이메일 ", required = true)
         private String email;
 
         @ApiModelProperty(value = "권한 ", required = true)
         private String role;
 
-        public UserAccessDTO(Claims claims){
-            this.email = claims.get("email",String.class);
-            this.role = claims.get("role",String.class);
+        public UserAccessDTO(Claims claims) {
+            this.email = claims.get("email", String.class);
+            this.role = claims.get("role", String.class);
         }
 
         public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -69,6 +69,7 @@ public class UserDTO {
         private String birth;
         @ApiModelProperty(value = "전화번호", required = true)
         private String phone;
+
         public User toEntity() {
 
             return User.builder()

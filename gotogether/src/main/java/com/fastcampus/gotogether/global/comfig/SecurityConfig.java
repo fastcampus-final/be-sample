@@ -31,7 +31,7 @@ public class SecurityConfig {
 
 
     private static final String[] PUBLIC_URLS = { //이 URL은 권한 검사안함
-            "/user/signup", "/user/login", "/api/logout","/user/refresh",
+            "/user/signup", "/user/login", "/api/logout", "/user/refresh",
 
             /* swagger v3 */
             "/swagger-resources/**",

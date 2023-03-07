@@ -40,7 +40,7 @@ public class JwtFilter extends OncePerRequestFilter {
                         "",
                         userAccessDTO.getAuthorities()));
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         filterChain.doFilter(request, response);

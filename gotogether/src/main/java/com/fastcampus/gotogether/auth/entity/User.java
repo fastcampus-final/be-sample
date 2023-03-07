@@ -44,7 +44,7 @@ public class User {
     @Column(name = "deleteCheck")
     private String deleteCheck;
 
-    @Column(name = "role" ,nullable = false)
+    @Column(name = "role", nullable = false)
     private String role;
 
     @CreationTimestamp
@@ -65,7 +65,7 @@ public class User {
     }
 
     @Builder
-    public User(String email, String password, String name, String birth, String phone, String deleteCheck,String role) {
+    public User(String email, String password, String name, String birth, String phone, String deleteCheck, String role) {
         this.email = email;
         this.password = password;
         this.name = name;

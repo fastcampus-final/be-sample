@@ -30,7 +30,7 @@ public class JwtProvider {
                 .setIssuedAt(now) //토큰 발급시간
                 .setExpiration(new Date(now.getTime() + Duration.ofMinutes(30).toMillis())) // 토큰 발급 시간 기준 얼마나 유지 시킬건지.
                 .claim("email", user.getEmail()) // 페이로드에 현재 엔티티의 정보
-                .claim("role",user.getRole())
+                .claim("role", user.getRole())
                 .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecretKey())
                 .compact();
 
@@ -83,7 +83,7 @@ public class JwtProvider {
         return (expiration.getTime() - now);
     }
 
-    public String recreationAccessToken(String userEmail,String userRole) {
+    public String recreationAccessToken(String userEmail, String userRole) {
 
         Date now = new Date();
         //Access Token
