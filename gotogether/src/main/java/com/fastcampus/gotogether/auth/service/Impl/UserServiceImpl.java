@@ -105,18 +105,6 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
-    @Transactional
-    public ResponseDTO<?> setUserToAdmin(UserDTO.EmailOnly dto) {
-        try {
-            User user =  userRepository.findByEmail(dto.getEmail()).orElseThrow(IllegalArgumentException::new);
-            user.setRole("ROLE_ADMIN");
-            return new ResponseDTO<>(200,"관리자 권한 부여 완료.",user.getEmail());
-        }catch (IllegalArgumentException e){
-            return new ErrorResponseDTO(500,"관리자 권한 부여 실패").toResponse();
-        }
-    }
-
     private String encodingPassword(String password) {
         return passwordEncoder.encode(password);
     }

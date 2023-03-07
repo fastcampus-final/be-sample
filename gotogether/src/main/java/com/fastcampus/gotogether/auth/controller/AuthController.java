@@ -71,11 +71,6 @@ public class AuthController {
 
     }
 
-    @PatchMapping("/admin/setAdmin")
-    public ResponseDTO<?> setAdmin(@RequestBody UserDTO.EmailOnly user){
-        return new ResponseDTO<>(userService.setUserToAdmin(user));
-    }
-
     @GetMapping("/test/user")
 //    @PreAuthorize("hasAnyRole('USER')") 유저 권한만 허용
     public ResponseDTO<?> checkUser(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO){

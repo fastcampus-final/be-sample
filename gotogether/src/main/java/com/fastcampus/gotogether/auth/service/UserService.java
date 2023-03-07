@@ -15,6 +15,4 @@ public interface UserService {
     public ResponseDTO<?> updateUser(UserDTO.UserAccessDTO userAccessDTO, UserDTO.PatchUserReqDTO patchUserReqDTO);
 
     public ResponseDTO<?> deleteUser(UserDTO.UserAccessDTO userAccessDTO, UserDTO.DeleteUserReqDTO deleteUserReqDTO);
-
-    public ResponseDTO<?> setUserToAdmin(UserDTO.EmailOnly user);
 }
