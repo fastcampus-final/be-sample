@@ -5,5 +5,6 @@ import com.fastcampus.gotogether.global.response.ResponseDTO;
 
 public interface AdminService {
 
-    ResponseDTO<?> setUserToAdmin(UserDTO.EmailOnly user);
+    ResponseDTO<?> setUserToAdmin(UserDTO.EmailOnly dto);
+    ResponseDTO<?> setAdminToUser(UserDTO.EmailOnly dto);
 }

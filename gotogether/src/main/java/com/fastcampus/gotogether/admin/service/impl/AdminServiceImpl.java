@@ -26,4 +26,16 @@ public class AdminServiceImpl implements AdminService {
             return new ErrorResponseDTO(500,"관리자 권한 부여 실패").toResponse();
         }
     }
+
+    @Override
+    @Transactional
+    public ResponseDTO<?> setAdminToUser(UserDTO.EmailOnly dto) {
+        try {
+            User user = userRepository.findByEmail(dto.getEmail()).orElseThrow(IllegalArgumentException::new);
+            user.setRole("ROLE_USER");
+            return new ResponseDTO<>(200,"관리자 권한 박탈 완료",user.getEmail());
+        }catch (IllegalArgumentException e){
+            return new ErrorResponseDTO(500,"관리자 권한 박탈 실패").toResponse();
+        }
+    }
 }

@@ -23,5 +23,12 @@ public class AdminController {
         return new ResponseDTO<>(adminService.setUserToAdmin(user));
     }
 
+    @PatchMapping("/admin/setAdmin")
+    @ApiOperation(value = "회원탈퇴 버튼 (토큰 O)", notes = "입력받은 email 을 통해 관리자 권한 부여")
+    public ResponseDTO<?> setUser(@RequestBody UserDTO.EmailOnly user){
+        return new ResponseDTO<>(adminService.setUserToAdmin(user));
+    }
+
+
 
 }
