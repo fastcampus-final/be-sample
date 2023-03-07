@@ -147,7 +147,7 @@ public class UserDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     @ToString
-    @ApiModel(value = "관리자 승격")
+    @ApiModel(value = "이메일만 사용하는 dto")
     public static class EmailOnly {
 
         @ApiModelProperty(value = "이메일 ", required = true)
