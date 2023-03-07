@@ -18,15 +18,15 @@ public class AdminController {
     private final AdminService adminService;
 
     @PatchMapping("/admin/setAdmin")
-    @ApiOperation(value = "회원탈퇴 버튼 (토큰 O)", notes = "입력받은 email 을 통해 관리자 권한 부여")
+    @ApiOperation(value = "관리자 권한 부여", notes = "입력받은 email 을 통해 관리자 권한 부여")
     public ResponseDTO<?> setAdmin(@RequestBody UserDTO.EmailOnly user){
         return new ResponseDTO<>(adminService.setUserToAdmin(user));
     }
 
     @PatchMapping("/admin/setAdmin")
-    @ApiOperation(value = "회원탈퇴 버튼 (토큰 O)", notes = "입력받은 email 을 통해 관리자 권한 부여")
+    @ApiOperation(value = "관리자 권한 박탈", notes = "입력받은 email 을 통해 관리자 권한 박탈")
     public ResponseDTO<?> setUser(@RequestBody UserDTO.EmailOnly user){
-        return new ResponseDTO<>(adminService.setUserToAdmin(user));
+        return new ResponseDTO<>(adminService.setAdminToUser(user));
     }
 
 
