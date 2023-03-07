@@ -71,21 +71,23 @@ public class AuthController {
     }
 
     @GetMapping("/test/user")
-    @PreAuthorize("hasAnyRole('USER')") /**유저 권한만 허용 **/
+    @PreAuthorize("hasAnyRole('USER')")
+    /**유저 권한만 허용 **/
     @ApiOperation(value = "User 권한 확인", notes = "ROLE_USER 인 경우만 작동")
-    public ResponseDTO<?> checkUser(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO){
+    public ResponseDTO<?> checkUser(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO) {
         return new ResponseDTO<>(userAccessDTO.getEmail());
     }
 
-    @GetMapping("/admin/admin")
+    @GetMapping("/test/admin")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @ApiOperation(value = "ADMIN 권한 확인", notes = "ROLE_ADMIN 인 경우만 작동")
-    public ResponseDTO<?> checkAdmin(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO){
+    public ResponseDTO<?> checkAdmin(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO) {
         return new ResponseDTO<>(userAccessDTO.getEmail());
     }
 
     @GetMapping("/test/role")
     @ApiOperation(value = "권한 확인", notes = "모든 권한에서 작동")
-    public String checkRole(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO){
+    public String checkRole(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO) {
         return userAccessDTO.getRole();
     }
 
