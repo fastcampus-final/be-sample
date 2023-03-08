@@ -1,8 +1,7 @@
-![header](https://capsule-render.vercel.app/api?type=waving&color=gradient&height=300&section=header&text=FinalProject%20BackEnd&fontSize=80&animation=fadeIn&fontAlignY=38&descAlignY=51&descAlign=62)
+![header](https://capsule-render.vercel.app/api?type=waving&color=gradient&height=300&section=header&text=Final%20Project%20[BE]&fontSize=80&animation=fadeIn&fontAlignY=38&descAlignY=51&descAlign=62)
 
 
-# BE-repo
-백엔드 레파지토리
+# 고투게더 서비스 플랫폼 리뉴얼 프로젝트
 
 ## 프로젝트 기간
 - 23/03/03~23/04/10
