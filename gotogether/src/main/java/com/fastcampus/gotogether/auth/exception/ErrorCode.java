@@ -12,9 +12,9 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 @AllArgsConstructor
 public enum ErrorCode {
 
-    INVALID_TOKEN(403, BAD_REQUEST, "유효하지 않은 토큰입니다."),
-    UNKNOWN_ERROR(401, BAD_REQUEST, "토큰이 존재하지 않습니다."),
-    EXPIRED_TOKEN(401, UNAUTHORIZED, "만료된 토큰입니다.");
+    INVALID_TOKEN(BAD_REQUEST.value(), BAD_REQUEST, "유효하지 않은 토큰입니다."),
+    UNKNOWN_ERROR(BAD_REQUEST.value(), BAD_REQUEST, "토큰이 존재하지 않습니다."),
+    EXPIRED_TOKEN(UNAUTHORIZED.value(), UNAUTHORIZED, "만료된 토큰입니다.");
 
     private final int code;
     private final HttpStatus httpStatus;

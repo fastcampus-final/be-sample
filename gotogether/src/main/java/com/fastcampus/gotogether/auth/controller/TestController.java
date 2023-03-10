@@ -22,7 +22,7 @@ public class TestController {
 
     private final AdminService adminService;
 
-    @GetMapping("/test/user")
+    @GetMapping("/user")
     @PreAuthorize("hasAnyRole('USER')")
     /**유저 권한만 허용 **/
     @ApiOperation(value = "User 권한 확인", notes = "ROLE_USER 인 경우만 작동")
@@ -30,22 +30,22 @@ public class TestController {
         return new ResponseDTO<>(userAccessDTO.getEmail());
     }
 
-    @GetMapping("/test/admin")
+    @GetMapping("/admin")
     @PreAuthorize("hasAnyRole('ADMIN')")
     @ApiOperation(value = "ADMIN 권한 확인", notes = "ROLE_ADMIN 인 경우만 작동")
     public ResponseDTO<?> checkAdmin(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO) {
         return new ResponseDTO<>(userAccessDTO.getEmail());
     }
 
-    @GetMapping("/test/role")
+    @GetMapping("/role")
     @ApiOperation(value = "권한 확인", notes = "모든 권한에서 작동")
     public String checkRole(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO) {
         return userAccessDTO.getRole();
     }
 
-    @GetMapping("/test/selfAdmin")
-    @ApiOperation(value = "개발 테스트용 관리자 승격",notes = "현재 사용자 관리자로 승격 (main 올릴땐 삭제)")
-    public ResponseDTO<?> selfAdmin(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO){
+    @GetMapping("/selfAdmin")
+    @ApiOperation(value = "개발 테스트용 관리자 승격", notes = "현재 사용자 관리자로 승격 (main 올릴땐 삭제)")
+    public ResponseDTO<?> selfAdmin(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO) {
         return adminService.setUserToAdmin(new UserDTO.EmailOnly(userAccessDTO.getEmail()));
     }
 }

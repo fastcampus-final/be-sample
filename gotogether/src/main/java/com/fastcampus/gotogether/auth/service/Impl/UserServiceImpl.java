@@ -7,9 +7,10 @@ import com.fastcampus.gotogether.auth.jwt.JwtProvider;
 import com.fastcampus.gotogether.auth.repository.RedisTemplateRepository;
 import com.fastcampus.gotogether.auth.repository.UserRepository;
 import com.fastcampus.gotogether.auth.service.UserService;
-import com.fastcampus.gotogether.global.response.ErrorResponseDTO;
 import com.fastcampus.gotogether.global.response.ResponseDTO;
+import com.fastcampus.gotogether.global.response.ResponseStatusCustomCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +34,7 @@ public class UserServiceImpl implements UserService {
             userRepository.save(signupReqDTO.toEntity());
             return new ResponseDTO<>(signupReqDTO.toString());
         } else {
-            return new ErrorResponseDTO(500, "이미 존재하는 회원입니다.").toResponse();
+            return new ResponseDTO<>(HttpStatus.BAD_REQUEST, null, "이미 존재하는 회원입니다.");
         }
     }
 
@@ -43,16 +44,17 @@ public class UserServiceImpl implements UserService {
             User user = userRepository.findByEmail(loginReqDTO.getEmail())
                     .orElseThrow(IllegalArgumentException::new);
             if (withDrawCheck(user)) {
-                return new ErrorResponseDTO(500, "탈퇴한 회원입니다.").toResponse();
+                return new ResponseDTO<>(HttpStatus.BAD_REQUEST, null, "탈퇴한 회원입니다.");
             }
             passwordMustBeSame(loginReqDTO.getPassword(), user.getPassword());
             TokenDTO tokenDTO = jwtProvider.makeJwtToken(user);
             redisTemplateRepository.setDataExpire(tokenDTO.getRefreshToken(), user.getEmail(), jwtProvider.getExpiration(tokenDTO.getRefreshToken()));
-
+            if (user.getRole().equals("ROLE_ADMIN")) {
+                return new ResponseDTO<>(HttpStatus.OK, ResponseStatusCustomCode.ADMIN.getCode(), "관리자 권한 입니다.", tokenDTO);
+            }
             return new ResponseDTO<>(tokenDTO);
-
         } catch (NoSuchElementException | IllegalArgumentException e) {
-            return new ErrorResponseDTO(500, "로그인에 실패하였습니다.").toResponse();
+            return new ResponseDTO<>(HttpStatus.NOT_FOUND, null, "로그인에 실패하였습니다.");
         }
     }
 
@@ -66,9 +68,8 @@ public class UserServiceImpl implements UserService {
             } else {
                 throw new IllegalArgumentException();
             }
-
         } catch (IllegalArgumentException e) {
-            return new ErrorResponseDTO(500, "로그인 정보가 없습니다.").toResponse();
+            return new ResponseDTO<>(HttpStatus.NOT_FOUND, "로그인 정보가 없습니다.");
         }
     }
 
@@ -84,9 +85,9 @@ public class UserServiceImpl implements UserService {
 
             user.update(patchUserReqDTO.getNewPassword(), patchUserReqDTO.getPhone());
 
-            return new ResponseDTO<>(200, "회원정보 수정 성공하였습니다.", patchUserReqDTO);
+            return new ResponseDTO<>(HttpStatus.OK, patchUserReqDTO, "회원정보 수정 성공하였습니다.");
         } catch (IllegalArgumentException e) {
-            return new ErrorResponseDTO(500, "기존 비밀번호가 일치하지 않습니다.").toResponse();
+            return new ResponseDTO<>(HttpStatus.UNAUTHORIZED, "기존 비밀번호가 일치하지 않습니다.");
         }
     }
 
@@ -100,9 +101,9 @@ public class UserServiceImpl implements UserService {
             passwordMustBeSame(deleteUserReqDTO.getPassword(), user.getPassword());
             user.delete("withdraw");
 
-            return new ResponseDTO<>(200, "회원 탈퇴 성공.", user);
+            return new ResponseDTO<>(HttpStatus.OK, user, "회원 탈퇴 성공.");
         } catch (IllegalArgumentException e) {
-            return new ErrorResponseDTO(500, "기존 비밀번호가 일치하지 않습니다.").toResponse();
+            return new ResponseDTO<>(HttpStatus.UNAUTHORIZED, "기존 비밀번호가 일치하지 않습니다.");
         }
     }
 
