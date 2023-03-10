@@ -1,0 +1,77 @@
+//buildscript {
+//	ext {
+//		queryDslVersion = "5.0.0"
+//	}
+//}
+
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '2.7.10-SNAPSHOT'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+}
+
+group = 'com.fastcampus'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+	maven { url 'https://repo.spring.io/milestone' }
+	maven { url 'https://repo.spring.io/snapshot' }
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+
+	//  jwt dependencies
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
+	//swagger
+	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '3.0.0'
+	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
+	implementation 'io.springfox:springfox-boot-starter:3.0.0'
+
+	//  JSONObject dependencies
+	implementation group: 'org.json', name: 'json', version: '20160810'
+
+	//  redis dependencies
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+//	//  querydsl dependencies
+//	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+//	annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+////querydsl 추가 시작
+//def querydslDir = "$buildDir/generated/querydsl"
+//querydsl {
+//	jpa = true
+//	querydslSourcesDir = querydslDir
+//}
+//sourceSets {
+//	main.java.srcDir querydslDir
+//}
+//configurations {
+//	querydsl.extendsFrom compileClasspath
+//}
+//compileQuerydsl {
+//	options.annotationProcessorPath = configurations.querydsl
+//}
+////querydsl 추가 끝
