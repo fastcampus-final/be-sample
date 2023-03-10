@@ -1,29 +1,46 @@
 package com.fastcampus.gotogether.global.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 public class ResponseDTO<T> {
 
-    @Schema(name = "Http code", example = "200")
+    @Schema(name = "HttpStatus code", example = "OK")
+    private HttpStatus status;
+    @Schema(name = "HttpStatus code", example = "200")
     private Integer code;
-    @Schema(name = "result message", example = "응답 성공")
+    @Schema(name = "result message", example = "추가 설명 메세지")
     private String message;
 
-    @Schema(name = "result data", example = "{name = '이규석', age = '25세'}")
+    @Schema(name = "result data", example = "{name = 'data', age = 'name=홍길동'}")
     private T data;
 
     public ResponseDTO(T data) {
         this.code = HttpStatus.OK.value();
-        this.message = "요청에 성공하였습니다.";
+        this.status = HttpStatus.OK;
+        this.message = null;
+        this.data = data;
+    }
+
+    public ResponseDTO(HttpStatus status, T data) {
+        this.code = status.value();
+        this.status = status;
+        this.data = data;
+    }
+
+    public ResponseDTO(HttpStatus status, T data, String message) {
+        this.code = status.value();
+        this.status = status;
+        this.data = data;
+        this.message = message;
+    }
+
+    public ResponseDTO(HttpStatus status, Integer code, String message, T data) {
+        this.code = code;
+        this.message = message;
+        this.status = status;
         this.data = data;
     }
 

@@ -8,7 +8,6 @@ import com.fastcampus.gotogether.global.response.ResponseDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -24,7 +23,7 @@ public class AuthController {
     private final TokenService tokenService;
 
     @PostMapping("/user/signup")
-    @ApiOperation(value = "회원가입 (토큰 X)", notes = "정보를 입력받아 회원가입을 진행하고 DB에 저장하는")
+    @ApiOperation(value = "회원가입 (토큰 X)", notes = "정보를 입력받아 회원가입을 진행하고 DB에 저장")
 
     public ResponseDTO<?> signUp(@RequestBody UserDTO.SignupReqDTO signupReqDTO) {
         return userService.signup(signupReqDTO);
@@ -44,14 +43,14 @@ public class AuthController {
     }
 
     @GetMapping("/user/myInfo")
-    @ApiOperation(value = "회원정보 수정페이지 (토큰 O)", notes = "회원정보 수정페이지로 이동한다. " +
+    @ApiOperation(value = "회원정보 요청 (토큰 O)", notes = "회원정보 요청." +
             "현재 로그인회원의 정보를 반환한다.")
     public ResponseDTO<?> editUser(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO) {
         return userService.editUser(userAccessDTO);
     }
 
     @PatchMapping("/user/myInfo")
-    @ApiOperation(value = "회원정보 수정버튼 (토큰 O)", notes = "기존 비밀번호가 맞다면 DB에 저장한다.")
+    @ApiOperation(value = "회원정보 수정 (토큰 O)", notes = "기존 비밀번호가 맞다면 DB에 저장한다.")
     public ResponseDTO<?> updateUser(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO, @RequestBody UserDTO.PatchUserReqDTO patchUserReqDTO) {
         return userService.updateUser(userAccessDTO, patchUserReqDTO);
     }
@@ -64,31 +63,10 @@ public class AuthController {
     }
 
     @PostMapping("/user/refresh")
-    @ApiOperation(value = "토큰 리프레시", notes = "리프레시 토큰을 보내주면 확인하고 엑세스토큰을 새로 발급")
+    @ApiOperation(value = "토큰 리프레시", notes = "리프레시 토큰을 보내주면 유효성을 확인하고 엑세스토큰을 새로 발급")
     public ResponseDTO<?> validateRefreshToken(@RequestBody TokenDTO.RefreshTokenReqDTO refreshTokenReqDTO) {
         return tokenService.validateRefreshToken(refreshTokenReqDTO.getRefreshToken());
 
-    }
-
-    @GetMapping("/test/user")
-    @PreAuthorize("hasAnyRole('USER')")
-    /**유저 권한만 허용 **/
-    @ApiOperation(value = "User 권한 확인", notes = "ROLE_USER 인 경우만 작동")
-    public ResponseDTO<?> checkUser(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO) {
-        return new ResponseDTO<>(userAccessDTO.getEmail());
-    }
-
-    @GetMapping("/test/admin")
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    @ApiOperation(value = "ADMIN 권한 확인", notes = "ROLE_ADMIN 인 경우만 작동")
-    public ResponseDTO<?> checkAdmin(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO) {
-        return new ResponseDTO<>(userAccessDTO.getEmail());
-    }
-
-    @GetMapping("/test/role")
-    @ApiOperation(value = "권한 확인", notes = "모든 권한에서 작동")
-    public String checkRole(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO) {
-        return userAccessDTO.getRole();
     }
 
 }
